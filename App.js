@@ -1,21 +1,46 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
 
 import logo from './assets/logo.png';
 
-export default function App() {
-	return (
-		<View style={styles.container}>
-			<View style={styles.body}>
-				<Image source={logo} />
-				<Text style={styles.ip}>IP</Text>
-				<Button title='Give me my IP!'></Button>
+export default class App extends Component {
+	constructor(props) {
+		super(props);
+
+		this.findMyIp = this.findMyIp.bind(this);
+
+		this.state = {
+			data: ''
+		};
+	}
+
+	async findMyIp() {
+		this.setState({
+			data: 'Retrieving IP...'
+		});
+
+		const ip = await fetch('http://httpbin.org/ip');
+		const data = await ip.json();
+		const dataArray = data.origin.split(',');
+		this.setState({
+			data: dataArray[0]
+		});
+	}
+
+	render() {
+		return (
+			<View style={styles.container}>
+				<View style={styles.body}>
+					<Image source={logo} />
+					<Text style={styles.ip}>{this.state.data}</Text>
+					<Button title='Give me my IP!' onPress={this.findMyIp}></Button>
+				</View>
+				<View style={styles.footer}>
+					<Text style={styles.made}>Made by romluc 2019</Text>
+				</View>
 			</View>
-			<View style={styles.footer}>
-				<Text style={styles.made}>Made by romluc 2019</Text>
-			</View>
-		</View>
-	);
+		);
+	}
 }
 
 const styles = StyleSheet.create({
