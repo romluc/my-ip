@@ -4,17 +4,11 @@ import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import logo from './assets/logo.png';
 
 export default class App extends Component {
-	constructor(props) {
-		super(props);
+	state = {
+		data: ''
+	};
 
-		this.findMyIp = this.findMyIp.bind(this);
-
-		this.state = {
-			data: ''
-		};
-	}
-
-	async findMyIp() {
+	findMyIp = async () => {
 		this.setState({
 			data: 'Retrieving IP...'
 		});
@@ -25,7 +19,7 @@ export default class App extends Component {
 		this.setState({
 			data: dataArray[0]
 		});
-	}
+	};
 
 	render() {
 		return (
